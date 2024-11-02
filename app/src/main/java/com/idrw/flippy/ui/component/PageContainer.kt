@@ -34,7 +34,7 @@ fun PageContainer(
         Column (
             modifier = modifier
                 .fillMaxWidth()
-                .fillMaxHeight()//.weight(1f, fill = true)
+                .fillMaxHeight()
         ) {
             content()
         }
