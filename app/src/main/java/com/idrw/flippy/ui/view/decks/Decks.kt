@@ -29,7 +29,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import com.idrw.flippy.LocalNavController
 import com.idrw.flippy.R
+import com.idrw.flippy.Routes
 import com.idrw.flippy.ui.component.DeckPreview
 import com.idrw.flippy.ui.component.PageContainer
 import com.idrw.flippy.ui.theme.CustomRed
@@ -57,14 +59,16 @@ fun Decks() {
 
     val sheetState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
-
     var showBottomSheet by remember { mutableStateOf(false) }
+
+    val navController = LocalNavController.current
 
     PageContainer(title = "Decks") {
         LazyColumn (verticalArrangement = Arrangement.spacedBy(20.dp)) {
             items(items) {
                 DeckPreview(
                     it.title, it.cards, it.progress,
+                    onClick = { navController.navigate(Routes.Deck("123")) },
                     onClickOptions = { showBottomSheet = true }
                 )
             }

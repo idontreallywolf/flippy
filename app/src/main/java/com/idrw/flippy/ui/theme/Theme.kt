@@ -28,7 +28,8 @@ private val LightColorScheme = lightColorScheme(
     onPrimary = Color(0xFF283139),
     onSecondary = Color(0xFFFFFFFF),
 
-    outline = Color(0xFFEFEFEF)
+    outline = Color(0xFFEFEFEF),
+
 )
 
 @Composable
