@@ -8,7 +8,11 @@ import androidx.compose.ui.Modifier
 
 @Composable
 fun MainScreen(page: @Composable () -> Unit) {
-    Scaffold { padding ->
+    Scaffold (
+        bottomBar = {
+
+        }
+    ) { padding ->
         Column(modifier = Modifier.padding(padding)) {
             page()
         }

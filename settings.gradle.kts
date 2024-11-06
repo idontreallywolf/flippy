@@ -19,6 +19,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "My Application (Flippy)"
+rootProject.name = "Flippy"
 include(":app")
  

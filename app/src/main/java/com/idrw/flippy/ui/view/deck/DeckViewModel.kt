@@ -8,6 +8,10 @@ class DeckViewModel: ViewModel() {
         private set
 
     fun generateRandomFlashcards(count: Int = 10) {
+        if (flashcards.size > 0) {
+            return
+        }
+
         val frontTextSamples = listOf("What is the capital of France?", "Define polymorphism.", "What is 2 + 2?", "Explain inheritance in OOP.", "Name the planets in our solar system.")
         val backTextSamples = listOf("Paris", "Ability of a function to handle objects of many types", "4", "A mechanism to create a new class using an existing class", "Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, Neptune")
         val learnStatusValues = LearnStatus.entries.toTypedArray()

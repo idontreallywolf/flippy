@@ -1,7 +1,6 @@
 package com.idrw.flippy
 
 import androidx.compose.animation.AnimatedContentTransitionScope
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.compositionLocalOf
@@ -10,10 +9,12 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navigation
 import androidx.navigation.toRoute
 import com.idrw.flippy.ui.view.card.Card
 import com.idrw.flippy.ui.view.deck.Deck
 import com.idrw.flippy.ui.view.deck.DeckViewModel
+import com.idrw.flippy.ui.view.deck.NewCard
 import com.idrw.flippy.ui.view.decks.Decks
 import kotlinx.serialization.Serializable
 
@@ -21,6 +22,7 @@ import kotlinx.serialization.Serializable
 data object Routes {
     @Serializable data object Decks
     @Serializable data class Deck(val deckId: String)
+    @Serializable data class NewCard(val deckId: String)
     @Serializable data class Card(val cardId: String)
 }
 
@@ -43,11 +45,22 @@ fun Navigation(content: @Composable (page: @Composable () -> Unit) -> Unit) {
 
                 composable<Routes.Deck>(
                     enterTransition = { slideIntoContainer(towards = AnimatedContentTransitionScope.SlideDirection.Left) },
-                    exitTransition = { slideOutOfContainer(towards = AnimatedContentTransitionScope.SlideDirection.Right) }
+                    popEnterTransition = { slideIntoContainer(towards = AnimatedContentTransitionScope.SlideDirection.Right) },
+
+                    exitTransition = { slideOutOfContainer(towards = AnimatedContentTransitionScope.SlideDirection.Left) },
+                    popExitTransition = { slideOutOfContainer(towards = AnimatedContentTransitionScope.SlideDirection.Right) },
                 ) {
                     val args = it.toRoute<Routes.Deck>()
                     val vm = viewModel<DeckViewModel>()
                     Deck(vm, args.deckId)
+                }
+
+                composable<Routes.NewCard>(
+                    enterTransition = { slideIntoContainer(towards = AnimatedContentTransitionScope.SlideDirection.Left) },
+                    exitTransition = { slideOutOfContainer(towards = AnimatedContentTransitionScope.SlideDirection.Right) }
+                ) {
+                    val args = it.toRoute<Routes.NewCard>()
+                    NewCard(args.deckId)
                 }
 
                 composable<Routes.Card> {

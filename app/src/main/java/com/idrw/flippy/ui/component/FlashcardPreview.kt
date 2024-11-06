@@ -90,7 +90,7 @@ fun LearnStatusIndicator(
             })
             Circle(CustomOrange, onClick = {
                 isChoosing = false
-                onChangeStatus(LearnStatus.PART_LEARNED)
+                onChangeStatus(LearnStatus.UNSURE)
             })
             Circle(CustomRed, onClick = {
                 isChoosing = false
@@ -173,7 +173,7 @@ fun Circle(color: Color, size: Dp = 15.dp, onClick: (() -> Unit)? = null) {
 fun colorByLearnStatus(learnStatus: LearnStatus): Color {
     return when(learnStatus) {
         LearnStatus.LEARNED -> CustomGreen
-        LearnStatus.PART_LEARNED -> CustomOrange
+        LearnStatus.UNSURE -> CustomOrange
         LearnStatus.NOT_LEARNED -> CustomRed
     }
 }
