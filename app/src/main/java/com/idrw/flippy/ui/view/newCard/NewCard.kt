@@ -14,6 +14,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.idrw.flippy.LocalNavController
+import com.idrw.flippy.ui.component.Card
 import com.idrw.flippy.ui.component.OutlinedInput
 import com.idrw.flippy.ui.component.PageContainer
 import com.idrw.flippy.ui.view.newCard.component.Buttons
@@ -26,12 +27,7 @@ fun NewCard(vm: NewCardViewModel, deckId: String) {
     val navController = LocalNavController.current
 
     PageContainer {
-        Column (modifier = Modifier
-            .clip(RoundedCornerShape(10.dp))
-            .background(MaterialTheme.colorScheme.primary)
-            .padding(15.dp),
-            verticalArrangement = Arrangement.spacedBy(15.dp)
-        ) {
+        Card (verticalArrangement = Arrangement.spacedBy(15.dp)) {
             Text("Create new flashcard", fontSize = 20.sp, fontWeight = FontWeight.SemiBold)
             CardTabs(onToggle = { vm.updateViewFront(it == CardTab.FRONT) })
 

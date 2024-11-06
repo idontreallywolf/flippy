@@ -6,6 +6,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -30,7 +31,7 @@ fun Card(
     Column (
         modifier = modifier
             .fillMaxWidth()
-            .height(150.dp)
+            .defaultMinSize(minHeight = 150.dp)
             .shadow(
                 elevation = 10.dp,
                 shape = RoundedCornerShape(10.dp)
