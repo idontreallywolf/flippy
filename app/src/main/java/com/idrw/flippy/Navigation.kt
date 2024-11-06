@@ -9,13 +9,13 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navigation
 import androidx.navigation.toRoute
 import com.idrw.flippy.ui.view.card.Card
 import com.idrw.flippy.ui.view.deck.Deck
 import com.idrw.flippy.ui.view.deck.DeckViewModel
-import com.idrw.flippy.ui.view.deck.NewCard
+import com.idrw.flippy.ui.view.newCard.NewCard
 import com.idrw.flippy.ui.view.decks.Decks
+import com.idrw.flippy.ui.view.newCard.NewCardViewModel
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -60,7 +60,8 @@ fun Navigation(content: @Composable (page: @Composable () -> Unit) -> Unit) {
                     exitTransition = { slideOutOfContainer(towards = AnimatedContentTransitionScope.SlideDirection.Right) }
                 ) {
                     val args = it.toRoute<Routes.NewCard>()
-                    NewCard(args.deckId)
+                    val vm = viewModel<NewCardViewModel>()
+                    NewCard(vm, args.deckId)
                 }
 
                 composable<Routes.Card> {
