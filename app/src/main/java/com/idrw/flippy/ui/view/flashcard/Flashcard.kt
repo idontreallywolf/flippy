@@ -1,4 +1,4 @@
-package com.idrw.flippy.ui.view.card
+package com.idrw.flippy.ui.view.flashcard
 
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
