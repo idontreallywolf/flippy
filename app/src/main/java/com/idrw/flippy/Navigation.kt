@@ -4,26 +4,31 @@ import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.compositionLocalOf
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
-import com.idrw.flippy.ui.view.flashcard.Card
+import com.idrw.flippy.ui.view.flashcard.Flashcard
 import com.idrw.flippy.ui.view.deck.Deck
 import com.idrw.flippy.ui.view.deck.DeckViewModel
 import com.idrw.flippy.ui.view.newCard.NewCard
 import com.idrw.flippy.ui.view.decks.Decks
+import com.idrw.flippy.ui.view.decks.DecksViewModel
 import com.idrw.flippy.ui.view.newCard.NewCardViewModel
+import com.idrw.flippy.ui.view.newDeck.NewDeck
+import com.idrw.flippy.ui.view.newDeck.NewDeckViewModel
 import kotlinx.serialization.Serializable
 
 @Serializable
 data object Routes {
     @Serializable data object Decks
-    @Serializable data class Deck(val deckId: String)
-    @Serializable data class NewCard(val deckId: String)
-    @Serializable data class Card(val cardId: String)
+    @Serializable data class Deck(val deckId: Int)
+    @Serializable data object NewDeck
+    @Serializable data class NewCard(val deckId: Int)
+    @Serializable data class Flashcard(val deckId: Int, val cardId: Int)
 }
 
 val LocalNavController = compositionLocalOf<NavHostController> {
@@ -40,7 +45,8 @@ fun Navigation(content: @Composable (page: @Composable () -> Unit) -> Unit) {
                     enterTransition = { slideIntoContainer(towards = AnimatedContentTransitionScope.SlideDirection.Right) },
                     exitTransition = { slideOutOfContainer(towards = AnimatedContentTransitionScope.SlideDirection.Left) }
                 ) {
-                    Decks()
+                    val vm = DecksViewModel(context = LocalContext.current)
+                    Decks(vm)
                 }
 
                 composable<Routes.Deck>(
@@ -64,9 +70,17 @@ fun Navigation(content: @Composable (page: @Composable () -> Unit) -> Unit) {
                     NewCard(vm, args.deckId)
                 }
 
-                composable<Routes.Card> {
-                    val args = it.toRoute<Routes.Card>()
-                    Card(args.cardId)
+                composable<Routes.NewDeck>(
+                    enterTransition = { slideIntoContainer(towards = AnimatedContentTransitionScope.SlideDirection.Left) },
+                    popExitTransition = { slideOutOfContainer(towards = AnimatedContentTransitionScope.SlideDirection.Right) }
+                ) {
+                    val vm = NewDeckViewModel(LocalContext.current)
+                    NewDeck(vm)
+                }
+
+                composable<Routes.Flashcard> {
+                    val args = it.toRoute<Routes.Flashcard>()
+                    Flashcard(args.deckId, args.cardId)
                 }
             }
         }

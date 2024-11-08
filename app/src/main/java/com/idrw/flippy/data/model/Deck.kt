@@ -6,8 +6,8 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "decks")
 data class Deck(
     @PrimaryKey(autoGenerate = true)
-    val id: Int,
+    val id: Int = 0,
     val title: String,
-    val cards: Int,
-    val progress: Float
+    val cards: Int = 0,
+    val progress: Float = 0.0f
 )

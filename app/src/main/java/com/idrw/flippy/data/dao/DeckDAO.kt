@@ -17,7 +17,7 @@ interface DeckDAO {
     fun getAllDecks(): Flow<List<Deck>>
 
     @Query("SELECT * FROM decks WHERE id = :id")
-    suspend fun findDeckById(id: Int): Flow<Deck>
+    fun findDeckById(id: Int): Flow<Deck>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(deck: Deck)

@@ -29,7 +29,7 @@ fun PageContainer(
             .background(MaterialTheme.colorScheme.background)
             .padding(15.dp)
     ) {
-        PageTitle(title ?: "")
+        title?.let { PageTitle(title) }
 
         Column (
             modifier = modifier

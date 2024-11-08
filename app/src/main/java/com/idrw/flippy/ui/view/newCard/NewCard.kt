@@ -17,7 +17,7 @@ import com.idrw.flippy.ui.view.newCard.component.CardTabs
 enum class CardTab { FRONT, BACK }
 
 @Composable
-fun NewCard(vm: NewCardViewModel, deckId: String) {
+fun NewCard(vm: NewCardViewModel, deckId: Int) {
     val navController = LocalNavController.current
 
     PageContainer {

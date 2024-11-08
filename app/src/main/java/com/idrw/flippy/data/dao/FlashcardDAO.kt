@@ -15,7 +15,7 @@ interface FlashcardDAO {
     fun getAllItems(): Flow<List<Flashcard>>
 
     @Query("SELECT * FROM flashcards WHERE id = :id")
-    suspend fun findFlashcardById(id: Int): Flow<Flashcard>
+    fun findFlashcardById(id: Int): Flow<Flashcard>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(flashcard: Flashcard)

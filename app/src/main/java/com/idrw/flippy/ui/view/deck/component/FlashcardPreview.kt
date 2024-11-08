@@ -31,12 +31,14 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @Composable
-fun FlashcardPreview(flashcardData: Flashcard, onLongClick: () -> Unit) {
-    var status by remember { mutableStateOf(flashcardData.learnStatus) }
-
-    Card (onLongClick = { onLongClick() }) {
+fun FlashcardPreview(
+    flashcardData: Flashcard,
+    onLongClick: () -> Unit,
+    onClick: () -> Unit
+) {
+    Card (onLongClick = onLongClick, onClick = onClick) {
         Row { Text(flashcardData.frontText) }
-        Row { LearnStatusIndicator(status, onChangeStatus = { status = it }) }
+        Row { LearnStatusIndicator(flashcardData.learnStatus, onChangeStatus = { }) }
     }
 }
 

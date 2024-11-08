@@ -7,6 +7,10 @@ class DeckViewModel: ViewModel() {
     var flashcards: MutableList<Flashcard> = mutableStateListOf()
         private set
 
+    fun filterFlashcards(learnStatus: LearnStatus): List<Flashcard> {
+        return flashcards.filter { it.learnStatus == learnStatus }
+    }
+
     fun generateRandomFlashcards(count: Int = 10) {
         if (flashcards.size > 0) {
             return
@@ -18,6 +22,8 @@ class DeckViewModel: ViewModel() {
 
         val fc = List(count) {
             Flashcard(
+                id = "123",
+                deckId = "456",
                 frontText = frontTextSamples.random(),
                 backText = backTextSamples.random(),
                 learnStatus = learnStatusValues.random()
