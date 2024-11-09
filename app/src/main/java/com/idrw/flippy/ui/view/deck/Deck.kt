@@ -1,6 +1,7 @@
 package com.idrw.flippy.ui.view.deck
 
 import android.util.Log
+import androidx.annotation.Nullable
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -29,18 +30,22 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.idrw.flippy.LocalNavController
 import com.idrw.flippy.Routes
+import com.idrw.flippy.data.model.Flashcard
 import com.idrw.flippy.ui.component.Circle
 import com.idrw.flippy.ui.view.deck.component.FlashcardOptionMenu
 import com.idrw.flippy.ui.view.deck.component.FlashcardPreview
@@ -48,6 +53,7 @@ import com.idrw.flippy.ui.component.PageContainer
 import com.idrw.flippy.ui.theme.CustomGreen
 import com.idrw.flippy.ui.theme.CustomOrange
 import com.idrw.flippy.ui.theme.CustomRed
+import com.idrw.flippy.utility.colorByLearnStatus
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -57,14 +63,6 @@ enum class LearnStatus {
     NOT_LEARNED
 }
 
-data class Flashcard(
-    val id: String,
-    val deckId: String,
-    val frontText: String,
-    val backText: String,
-    val learnStatus: LearnStatus
-)
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Deck(vm: DeckViewModel, deckId: Int) {
@@ -72,22 +70,31 @@ fun Deck(vm: DeckViewModel, deckId: Int) {
     val scope = rememberCoroutineScope()
     var viewOptionsMenu by remember { mutableStateOf(false) }
     var viewFilterMenu by remember { mutableStateOf(false) }
-    var learnStatusFilter by remember { mutableStateOf(LearnStatus.NOT_LEARNED) }
+    var learnStatusFilter by remember { mutableStateOf<LearnStatus?>(LearnStatus.NOT_LEARNED) }
     val navController = LocalNavController.current
 
-    LaunchedEffect(Unit) {
-        vm.generateRandomFlashcards()
-    }
+    val flashcards = vm.flashcards.collectAsState()
+        .value.filter {
+            (learnStatusFilter == null) ||
+                it.learnStatus == learnStatusFilter
+        }
+
+    var flashcardToModify by remember { mutableStateOf<Flashcard?>(null) }
 
     Box (modifier = Modifier.fillMaxSize()) {
         PageContainer(title = "Deck") {
             LazyColumn (verticalArrangement = Arrangement.spacedBy(20.dp)) {
-                items(vm.filterFlashcards(learnStatusFilter)) {
-                    Log.d("CARD", "${it.frontText} : ${it.learnStatus.name}")
+                items(flashcards) { flashcardData ->
                     FlashcardPreview(
-                        it,
-                        onLongClick = { viewOptionsMenu = true },
-                        onClick = { navController.navigate(Routes.Flashcard(it.deckId.toInt(), it.id.toInt())) },
+                        flashcardData,
+                        onLongClick = {
+                            flashcardToModify = flashcardData
+                            viewOptionsMenu = true
+                        },
+                        onClick = { navController.navigate(Routes.Flashcard(flashcardData.deckId, flashcardData.id)) },
+                        onChangeStatus = { newStatus ->
+                            vm.updateFlashcardStatus(flashcardData, newStatus)
+                        }
                     )
                 }
                 item { Spacer(modifier = Modifier.size(100.dp)) }
@@ -131,7 +138,7 @@ fun Deck(vm: DeckViewModel, deckId: Int) {
                         contentColor = MaterialTheme.colorScheme.onBackground
                     )
                 ) {
-                    Circle(CustomGreen)
+                    Circle(colorByLearnStatus(learnStatusFilter))
                     Spacer(modifier = Modifier.size(10.dp))
                     Text("Filter")
                 }
@@ -149,7 +156,12 @@ fun Deck(vm: DeckViewModel, deckId: Int) {
 
     FlashcardOptionMenu(
         isVisible = viewOptionsMenu,
-        onClickDelete = {},
+        onClickDelete = {
+            flashcardToModify?.let {
+                vm.deleteFlashcard(flashcardToModify!!)
+            }
+            viewOptionsMenu = false
+        },
         onClickEdit = {},
         scope = scope,
         sheetState = sheetState,
@@ -161,7 +173,7 @@ fun Deck(vm: DeckViewModel, deckId: Int) {
 @Composable
 fun DeckFilterMenu(
     isVisible: Boolean,
-    onSelectFilter: (filter: LearnStatus) -> Unit,
+    onSelectFilter: (filter: LearnStatus?) -> Unit,
     scope: CoroutineScope,
     sheetState: SheetState,
     onDismiss: () -> Unit
@@ -186,6 +198,7 @@ fun DeckFilterMenu(
                 .padding(10.dp),
             horizontalArrangement = Arrangement.spacedBy(10.dp)
         ) {
+            Circle(Color.LightGray, size = 15.dp, onClick = { onSelectFilter(null) })
             Circle(CustomGreen, size = 15.dp, onClick = { onSelectFilter(LearnStatus.LEARNED) })
             Circle(CustomOrange, size = 15.dp, onClick = { onSelectFilter(LearnStatus.UNSURE) })
             Circle(CustomRed, size = 15.dp, onClick = { onSelectFilter(LearnStatus.NOT_LEARNED) })

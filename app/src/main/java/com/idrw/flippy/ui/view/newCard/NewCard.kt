@@ -20,6 +20,11 @@ enum class CardTab { FRONT, BACK }
 fun NewCard(vm: NewCardViewModel, deckId: Int) {
     val navController = LocalNavController.current
 
+    if (vm.flashcardCreated) {
+        navController.navigateUp()
+        return
+    }
+
     PageContainer {
         Card (verticalArrangement = Arrangement.spacedBy(15.dp)) {
             Text("Create new flashcard", fontSize = 20.sp, fontWeight = FontWeight.SemiBold)
@@ -44,7 +49,7 @@ fun NewCard(vm: NewCardViewModel, deckId: Int) {
             }
 
             Buttons(
-                onSave = { navController.navigateUp() },
+                onSave = { vm.createFlashcard() },
                 onCancel = { navController.navigateUp() }
             )
         }

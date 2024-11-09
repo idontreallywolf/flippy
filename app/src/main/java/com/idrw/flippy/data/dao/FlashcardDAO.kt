@@ -11,11 +11,11 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface FlashcardDAO {
-    @Query("SELECT * from flashcards")
-    fun getAllItems(): Flow<List<Flashcard>>
+    @Query("SELECT * from flashcards WHERE deckId = :deckId")
+    fun getAllByDeckId(deckId: Int): Flow<List<Flashcard>>
 
     @Query("SELECT * FROM flashcards WHERE id = :id")
-    fun findFlashcardById(id: Int): Flow<Flashcard>
+    fun findById(id: Int): Flow<Flashcard>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(flashcard: Flashcard)

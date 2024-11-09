@@ -57,7 +57,7 @@ fun Navigation(content: @Composable (page: @Composable () -> Unit) -> Unit) {
                     popExitTransition = { slideOutOfContainer(towards = AnimatedContentTransitionScope.SlideDirection.Right) },
                 ) {
                     val args = it.toRoute<Routes.Deck>()
-                    val vm = viewModel<DeckViewModel>()
+                    val vm = DeckViewModel(LocalContext.current, args.deckId)
                     Deck(vm, args.deckId)
                 }
 
@@ -66,7 +66,7 @@ fun Navigation(content: @Composable (page: @Composable () -> Unit) -> Unit) {
                     exitTransition = { slideOutOfContainer(towards = AnimatedContentTransitionScope.SlideDirection.Right) }
                 ) {
                     val args = it.toRoute<Routes.NewCard>()
-                    val vm = viewModel<NewCardViewModel>()
+                    val vm = NewCardViewModel(LocalContext.current, args.deckId)
                     NewCard(vm, args.deckId)
                 }
 

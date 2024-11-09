@@ -24,9 +24,11 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.idrw.flippy.R
+import com.idrw.flippy.data.model.Flashcard
 import com.idrw.flippy.ui.component.Card
 import com.idrw.flippy.ui.component.LearnStatusIndicator
-import com.idrw.flippy.ui.view.deck.Flashcard
+import com.idrw.flippy.ui.view.deck.LearnStatus
+
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -34,11 +36,12 @@ import kotlinx.coroutines.launch
 fun FlashcardPreview(
     flashcardData: Flashcard,
     onLongClick: () -> Unit,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    onChangeStatus: (learnStatus: LearnStatus) -> Unit
 ) {
     Card (onLongClick = onLongClick, onClick = onClick) {
         Row { Text(flashcardData.frontText) }
-        Row { LearnStatusIndicator(flashcardData.learnStatus, onChangeStatus = { }) }
+        Row { LearnStatusIndicator(flashcardData.learnStatus, onChangeStatus = onChangeStatus) }
     }
 }
 
@@ -69,7 +72,7 @@ fun FlashcardOptionMenu(
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(5.dp))
                 .clickable {scope.launch { sheetState.hide() }.invokeOnCompletion {
-                    if (!sheetState.isVisible) { onDismiss() }
+                    if (!sheetState.isVisible) { onClickDelete() }
                 }}
                 .padding(10.dp),
             horizontalArrangement = Arrangement.spacedBy(10.dp)
@@ -79,7 +82,7 @@ fun FlashcardOptionMenu(
                 tint = MaterialTheme.colorScheme.onPrimary,
                 contentDescription = ""
             )
-            Text("Hide bottom sheet")
+            Text("Delete")
         }
     }
 }
