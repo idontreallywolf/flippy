@@ -79,10 +79,12 @@ fun Deck(vm: DeckViewModel, deckId: Int) {
                 it.learnStatus == learnStatusFilter
         }
 
+    val currentDeck = vm.currentDeck.collectAsState().value
+
     var flashcardToModify by remember { mutableStateOf<Flashcard?>(null) }
 
     Box (modifier = Modifier.fillMaxSize()) {
-        PageContainer(title = "Deck") {
+        PageContainer(title = currentDeck.title) {
             LazyColumn (verticalArrangement = Arrangement.spacedBy(20.dp)) {
                 items(flashcards) { flashcardData ->
                     FlashcardPreview(
