@@ -55,6 +55,7 @@ import com.idrw.flippy.ui.theme.CustomRed
 
 import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Decks(vm: DecksViewModel) {
     val sheetState = rememberModalBottomSheetState()
@@ -98,7 +99,7 @@ fun Decks(vm: DecksViewModel) {
                                         vm.deleteDeck(deckToModify!!)
                                     }
                                     deckToModify = null
-                                    showBottomSheet = false;
+                                    showBottomSheet = false
                                 }
                             }}
                             .padding(10.dp),
