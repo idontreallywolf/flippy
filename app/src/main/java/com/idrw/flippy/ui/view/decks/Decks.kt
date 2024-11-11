@@ -44,16 +44,13 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.ViewModel
 
 import com.idrw.flippy.LocalNavController
 import com.idrw.flippy.R
 import com.idrw.flippy.Routes
 import com.idrw.flippy.data.model.Deck
-import com.idrw.flippy.ui.component.Circle
 import com.idrw.flippy.ui.component.DeckPreview
 import com.idrw.flippy.ui.component.PageContainer
-import com.idrw.flippy.ui.theme.CustomGreen
 import com.idrw.flippy.ui.theme.CustomRed
 
 import kotlinx.coroutines.launch
@@ -67,15 +64,19 @@ fun Decks(vm: DecksViewModel) {
     val navController = LocalNavController.current
     val decks = vm.decks.collectAsState()
 
-    Box (modifier = Modifier.fillMaxSize()) {
+    var deckToModify by remember { mutableStateOf<Deck?>(null) }
 
+    Box (modifier = Modifier.fillMaxSize()) {
         PageContainer(title = "Decks") {
-            LazyColumn (verticalArrangement = Arrangement.spacedBy(20.dp)) {
+            LazyColumn (modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.spacedBy(20.dp)) {
                 items(decks.value) {
                     DeckPreview(
                         it.title, it.cards, it.progress,
                         onClick = { navController.navigate(Routes.Deck(it.id)) },
-                        onClickOptions = { showBottomSheet = true }
+                        onClickOptions = {
+                            deckToModify = it
+                            showBottomSheet = true
+                        }
                     )
                 }
             }
@@ -86,27 +87,6 @@ fun Decks(vm: DecksViewModel) {
                     onDismissRequest = { showBottomSheet = false },
                     sheetState = sheetState
                 ) {
-                    // Sheet content
-                    Row (
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clip(RoundedCornerShape(5.dp))
-                            .clickable {scope.launch { sheetState.hide() }.invokeOnCompletion {
-                                if (!sheetState.isVisible) {
-                                    showBottomSheet = false
-                                }
-                            }}
-                            .padding(10.dp),
-                        horizontalArrangement = Arrangement.spacedBy(10.dp)
-                    ) {
-                        Icon(
-                            painter = painterResource(R.drawable.trash),
-                            tint = MaterialTheme.colorScheme.onPrimary,
-                            contentDescription = ""
-                        )
-                        Text("Hide bottom sheet")
-                    }
-
                     Row (
                         modifier = Modifier
                             .fillMaxWidth()
@@ -114,7 +94,11 @@ fun Decks(vm: DecksViewModel) {
                             .background(CustomRed)
                             .clickable {scope.launch { sheetState.hide() }.invokeOnCompletion {
                                 if (!sheetState.isVisible) {
-                                    showBottomSheet = false
+                                    deckToModify?.let {
+                                        vm.deleteDeck(deckToModify!!)
+                                    }
+                                    deckToModify = null
+                                    showBottomSheet = false;
                                 }
                             }}
                             .padding(10.dp),
