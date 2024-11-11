@@ -17,7 +17,7 @@ import com.idrw.flippy.ui.view.newCard.component.CardTabs
 enum class CardTab { FRONT, BACK }
 
 @Composable
-fun NewCard(vm: NewCardViewModel, deckId: Int) {
+fun NewCard(vm: NewCardViewModel) {
     val navController = LocalNavController.current
 
     if (vm.flashcardCreated) {

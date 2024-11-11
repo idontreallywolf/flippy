@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.idrw.flippy.data.dao.DeckDAO
 import com.idrw.flippy.data.dao.FlashcardDAO
 import com.idrw.flippy.data.database.FlippyAppDB
 import com.idrw.flippy.data.model.Flashcard
@@ -14,9 +15,10 @@ import kotlinx.coroutines.launch
 
 class DeckViewModel(context: Context, deckId: Int): ViewModel() {
     var db = FlippyAppDB.getDatabase(context)
-    var dao: FlashcardDAO = db.flashcardDao()
+    var flashcardDao: FlashcardDAO = db.flashcardDao()
+    var deckDao: DeckDAO = db.deckDao()
 
-    var flashcards: StateFlow<List<Flashcard>> = dao.getAllByDeckId(deckId).stateIn(
+    var flashcards: StateFlow<List<Flashcard>> = flashcardDao.getAllByDeckId(deckId).stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
         initialValue = emptyList()
@@ -24,13 +26,14 @@ class DeckViewModel(context: Context, deckId: Int): ViewModel() {
 
     fun updateFlashcardStatus(flashcard: Flashcard, newStatus: LearnStatus) {
         viewModelScope.launch {
-            dao.update(flashcard.copy(learnStatus = newStatus))
+            flashcardDao.update(flashcard.copy(learnStatus = newStatus))
         }
     }
 
     fun deleteFlashcard(flashcard: Flashcard) {
         viewModelScope.launch {
-            dao.delete(flashcard)
+            flashcardDao.delete(flashcard)
+            deckDao.decrementCountById(flashcard.deckId)
         }
     }
 

@@ -15,7 +15,8 @@ import kotlinx.coroutines.launch
 
 class NewCardViewModel(context: Context, private val deckId: Int): ViewModel() {
     private val db: FlippyAppDB = FlippyAppDB.getDatabase(context)
-    private val dao: FlashcardDAO = db.flashcardDao()
+    private val flashcardDao: FlashcardDAO = db.flashcardDao()
+    private val deckDao: DeckDAO = db.deckDao()
 
     var viewFront by mutableStateOf(true)
         private set
@@ -32,7 +33,9 @@ class NewCardViewModel(context: Context, private val deckId: Int): ViewModel() {
 
     fun createFlashcard() {
         viewModelScope.launch {
-            dao.insert(Flashcard(
+            deckDao.incrementCountById(deckId)
+
+            flashcardDao.insert(Flashcard(
                 deckId = deckId,
                 frontText = frontText,
                 backText = backText,

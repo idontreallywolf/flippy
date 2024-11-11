@@ -67,7 +67,7 @@ fun Navigation(content: @Composable (page: @Composable () -> Unit) -> Unit) {
                 ) {
                     val args = it.toRoute<Routes.NewCard>()
                     val vm = NewCardViewModel(LocalContext.current, args.deckId)
-                    NewCard(vm, args.deckId)
+                    NewCard(vm)
                 }
 
                 composable<Routes.NewDeck>(

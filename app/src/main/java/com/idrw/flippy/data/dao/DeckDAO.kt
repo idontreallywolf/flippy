@@ -25,6 +25,12 @@ interface DeckDAO {
     @Update
     suspend fun update(deck: Deck)
 
+    @Query("UPDATE decks SET cards = cards + 1 WHERE id = :deckId")
+    suspend fun incrementCountById(deckId: Int)
+
+    @Query("UPDATE decks SET cards = cards - 1 WHERE id = :deckId")
+    suspend fun decrementCountById(deckId: Int)
+
     @Delete
     suspend fun delete(deck: Deck)
 }
