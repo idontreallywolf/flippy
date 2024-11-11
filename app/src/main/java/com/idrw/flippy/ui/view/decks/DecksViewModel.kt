@@ -26,4 +26,10 @@ class DecksViewModel(context: Context): ViewModel() {
             dao.insert(Deck(title = title))
         }
     }
+
+    fun deleteDeck(deck: Deck) {
+        viewModelScope.launch {
+            dao.delete(deck)
+        }
+    }
 }

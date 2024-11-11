@@ -1,10 +1,21 @@
 package com.idrw.flippy.data.model
 
 import androidx.room.Entity
+import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import com.idrw.flippy.ui.view.deck.LearnStatus
 
-@Entity(tableName = "flashcards")
+@Entity(
+    tableName = "flashcards",
+    foreignKeys = [
+        ForeignKey(
+            entity = Deck::class,
+            childColumns = ["deckId"],
+            parentColumns = ["id"],
+            onDelete = ForeignKey.CASCADE
+        )
+    ]
+)
 data class Flashcard(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
