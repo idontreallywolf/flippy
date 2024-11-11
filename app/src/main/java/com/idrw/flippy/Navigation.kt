@@ -5,18 +5,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.platform.LocalContext
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
-import com.idrw.flippy.ui.view.flashcard.Flashcard
+import com.idrw.flippy.ui.view.flashcardPractice.FlashcardPractice
 import com.idrw.flippy.ui.view.deck.Deck
 import com.idrw.flippy.ui.view.deck.DeckViewModel
+import com.idrw.flippy.ui.view.deck.LearnStatus
 import com.idrw.flippy.ui.view.newCard.NewCard
 import com.idrw.flippy.ui.view.decks.Decks
 import com.idrw.flippy.ui.view.decks.DecksViewModel
+import com.idrw.flippy.ui.view.flashcardPractice.FlashcardPracticeViewModel
 import com.idrw.flippy.ui.view.newCard.NewCardViewModel
 import com.idrw.flippy.ui.view.newDeck.NewDeck
 import com.idrw.flippy.ui.view.newDeck.NewDeckViewModel
@@ -28,7 +29,7 @@ data object Routes {
     @Serializable data class Deck(val deckId: Int)
     @Serializable data object NewDeck
     @Serializable data class NewCard(val deckId: Int)
-    @Serializable data class Flashcard(val deckId: Int, val cardId: Int)
+    @Serializable data class Flashcard(val deckId: Int, val cardId: Int, val filterBy: LearnStatus?)
 }
 
 val LocalNavController = compositionLocalOf<NavHostController> {
@@ -78,9 +79,13 @@ fun Navigation(content: @Composable (page: @Composable () -> Unit) -> Unit) {
                     NewDeck(vm)
                 }
 
-                composable<Routes.Flashcard> {
+                composable<Routes.Flashcard> (
+                    enterTransition = { slideIntoContainer(towards = AnimatedContentTransitionScope.SlideDirection.Left) },
+                    popExitTransition = { slideOutOfContainer(towards = AnimatedContentTransitionScope.SlideDirection.Right) }
+                ) {
                     val args = it.toRoute<Routes.Flashcard>()
-                    Flashcard(args.deckId, args.cardId)
+                    val vm = FlashcardPracticeViewModel(LocalContext.current, args.deckId, args.filterBy)
+                    FlashcardPractice(vm)
                 }
             }
         }

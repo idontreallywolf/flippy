@@ -7,12 +7,16 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import com.idrw.flippy.data.model.Flashcard
+import com.idrw.flippy.ui.view.deck.LearnStatus
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface FlashcardDAO {
     @Query("SELECT * from flashcards WHERE deckId = :deckId")
     fun getAllByDeckId(deckId: Int): Flow<List<Flashcard>>
+
+    @Query("SELECT * FROM flashcards WHERE deckId = :deckId AND learnStatus = :filter")
+    fun getFilteredByDeckId(deckId: Int, filter: LearnStatus): Flow<List<Flashcard>>
 
     @Query("SELECT * FROM flashcards WHERE id = :id")
     fun findById(id: Int): Flow<Flashcard>

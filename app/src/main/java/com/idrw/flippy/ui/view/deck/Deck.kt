@@ -93,7 +93,9 @@ fun Deck(vm: DeckViewModel, deckId: Int) {
                             flashcardToModify = flashcardData
                             viewOptionsMenu = true
                         },
-                        onClick = { navController.navigate(Routes.Flashcard(flashcardData.deckId, flashcardData.id)) },
+                        onClick = { navController.navigate(
+                            Routes.Flashcard(flashcardData.deckId, flashcardData.id, learnStatusFilter)
+                        ) },
                         onChangeStatus = { newStatus ->
                             vm.updateFlashcardStatus(flashcardData, newStatus)
                         }
