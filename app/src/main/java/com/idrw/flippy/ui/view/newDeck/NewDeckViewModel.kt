@@ -21,7 +21,7 @@ class NewDeckViewModel(context: Context): ViewModel() {
 
     fun createDeck(title: String) {
         viewModelScope.launch {
-            dao.insert(Deck(title = title))
+            dao.insert(Deck(title = title, emoji = "😀"))
             deckCreated = true
         }
     }

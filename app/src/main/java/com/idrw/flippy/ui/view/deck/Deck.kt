@@ -1,5 +1,6 @@
 package com.idrw.flippy.ui.view.deck
 
+import android.widget.Space
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -126,6 +127,8 @@ fun Deck(vm: DeckViewModel, deckId: Int) {
                     Text("New card")
                 }
 
+                Spacer(modifier = Modifier.size(10.dp))
+
                 Button(
                     onClick = { viewFilterMenu = true },
                     colors = ButtonDefaults.buttonColors(
@@ -134,8 +137,6 @@ fun Deck(vm: DeckViewModel, deckId: Int) {
                     )
                 ) {
                     Circle(colorByLearnStatus(learnStatusFilter))
-                    Spacer(modifier = Modifier.size(10.dp))
-                    Text("Filter")
                 }
             }
         }

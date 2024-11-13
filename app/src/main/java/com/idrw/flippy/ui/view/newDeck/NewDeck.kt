@@ -1,6 +1,5 @@
 package com.idrw.flippy.ui.view.newDeck
 
-import com.idrw.flippy.ui.view.newDeck.NewDeckViewModel
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable

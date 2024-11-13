@@ -11,5 +11,6 @@ data class Deck(
     val title: String = "",
     val cards: Int = 0,
     val cardsLearned: Int = 0,
-    val progress: Float = 0.0f
+    val progress: Float = 0.0f,
+    val emoji: String
 )

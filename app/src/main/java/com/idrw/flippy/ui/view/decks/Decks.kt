@@ -50,8 +50,10 @@ import com.idrw.flippy.R
 import com.idrw.flippy.Routes
 import com.idrw.flippy.data.model.Deck
 import com.idrw.flippy.ui.component.DeckPreview
+import com.idrw.flippy.ui.component.EmojiWithColor
 import com.idrw.flippy.ui.component.PageContainer
 import com.idrw.flippy.ui.theme.CustomRed
+import com.idrw.flippy.utility.getEmojiColor
 
 import kotlinx.coroutines.launch
 
@@ -69,6 +71,14 @@ fun Decks(vm: DecksViewModel) {
 
     Box (modifier = Modifier.fillMaxSize()) {
         PageContainer(title = "Decks") {
+            /*
+            Row {
+                EmojiWithColor(emoji = "💖")
+                EmojiWithColor(emoji = "🤣")
+                EmojiWithColor(emoji = "🎉")
+                EmojiWithColor(emoji = "👒")
+            }
+            */
             LazyColumn (modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.spacedBy(20.dp)) {
                 items(decks.value) {
                     DeckPreview(
