@@ -13,18 +13,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.idrw.flippy.data.model.Deck
 
 @Composable
 fun DeckPreview(
-    title: String,
-    cards: Int,
-    progress: Float,
+    deck: Deck,
     onClick: () -> Unit,
     onClickOptions: () -> Unit
 ) {
     Card(onClick = { onClick() }, onLongClick = { onClickOptions() }) {
-        DeckPreviewHeader(title, onClickOptions = { onClickOptions() })
-        DeckPreviewProgress(cards, progress)
+        DeckPreviewHeader(deck.title, onClickOptions = { onClickOptions() })
+        DeckPreviewProgress(deck.cards, deck.cardsLearned)
     }
 }
 

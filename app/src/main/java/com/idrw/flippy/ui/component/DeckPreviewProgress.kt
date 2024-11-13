@@ -14,15 +14,15 @@ import com.idrw.flippy.ui.theme.CustomGreen
 @Composable
 fun DeckPreviewProgress(
     cards: Int,
-    progress: Float
+    cardsLearned: Int
 ) {
     Column (
         modifier = Modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(5.dp)
     ) {
-        Text("4 / $cards cards learned")
+        Text("$cardsLearned / $cards cards learned")
         LinearProgressIndicator(
-            progress = { progress },
+            progress = { calculateProgress(cards, cardsLearned) },
             modifier = Modifier.fillMaxWidth(),
             color = CustomGreen,
             trackColor = MaterialTheme.colorScheme.background,
@@ -30,4 +30,12 @@ fun DeckPreviewProgress(
             drawStopIndicator = {}
         )
     }
+}
+
+private fun calculateProgress(cards: Int, cardLearned: Int): Float {
+    if (cards > 0) {
+        return cardLearned.toFloat() / cards
+    }
+
+    return 0f
 }

@@ -72,7 +72,7 @@ fun Decks(vm: DecksViewModel) {
             LazyColumn (modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.spacedBy(20.dp)) {
                 items(decks.value) {
                     DeckPreview(
-                        it.title, it.cards, it.progress,
+                        it,
                         onClick = { navController.navigate(Routes.Deck(it.id)) },
                         onClickOptions = {
                             deckToModify = it
@@ -110,7 +110,7 @@ fun Decks(vm: DecksViewModel) {
                             tint = Color.White,
                             contentDescription = ""
                         )
-                        Text("Hide bottom sheet")
+                        Text("Delete deck")
                     }
                 }
             }

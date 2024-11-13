@@ -13,7 +13,12 @@ import com.idrw.flippy.data.model.Deck;
 
 @Dao
 interface DeckDAO {
-    @Query("SELECT * from decks")
+    @Query(
+        "SELECT decks.*, count(flashcards.learnStatus) AS cardsLearned " +
+        "FROM decks LEFT JOIN flashcards " +
+        "ON flashcards.deckId = decks.id " +
+        "WHERE learnStatus = 'LEARNED'"
+    )
     fun getAllDecks(): Flow<List<Deck>>
 
     @Query("SELECT * FROM decks WHERE id = :id")

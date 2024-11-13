@@ -8,6 +8,7 @@ import com.idrw.flippy.data.database.FlippyAppDB
 import com.idrw.flippy.data.model.Deck
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
@@ -20,12 +21,6 @@ class DecksViewModel(context: Context): ViewModel() {
         started = SharingStarted.WhileSubscribed(5000),
         initialValue = emptyList()
     )
-
-    fun createDeck(title: String) {
-        viewModelScope.launch {
-            dao.insert(Deck(title = title))
-        }
-    }
 
     fun deleteDeck(deck: Deck) {
         viewModelScope.launch {
