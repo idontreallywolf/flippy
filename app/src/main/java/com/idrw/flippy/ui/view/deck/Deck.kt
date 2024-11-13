@@ -1,7 +1,5 @@
 package com.idrw.flippy.ui.view.deck
 
-import android.util.Log
-import androidx.annotation.Nullable
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -29,14 +27,12 @@ import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -47,6 +43,7 @@ import com.idrw.flippy.LocalNavController
 import com.idrw.flippy.Routes
 import com.idrw.flippy.data.model.Flashcard
 import com.idrw.flippy.ui.component.Circle
+import com.idrw.flippy.ui.component.LearnStatus
 import com.idrw.flippy.ui.view.deck.component.FlashcardOptionMenu
 import com.idrw.flippy.ui.view.deck.component.FlashcardPreview
 import com.idrw.flippy.ui.component.PageContainer
@@ -56,12 +53,6 @@ import com.idrw.flippy.ui.theme.CustomRed
 import com.idrw.flippy.utility.colorByLearnStatus
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-
-enum class LearnStatus {
-    LEARNED,
-    UNSURE,
-    NOT_LEARNED
-}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

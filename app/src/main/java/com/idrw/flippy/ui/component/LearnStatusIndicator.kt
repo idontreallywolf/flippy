@@ -28,8 +28,15 @@ import androidx.compose.ui.unit.sp
 import com.idrw.flippy.ui.theme.CustomGreen
 import com.idrw.flippy.ui.theme.CustomOrange
 import com.idrw.flippy.ui.theme.CustomRed
-import com.idrw.flippy.ui.view.deck.LearnStatus
 import com.idrw.flippy.utility.colorByLearnStatus
+
+enum class LearnStatus {
+    LEARNED { override fun toString(): String = "Learned" },
+    UNSURE { override fun toString(): String = "Unsure" },
+    NOT_LEARNED { override fun toString(): String = "Not Learned" };
+
+    abstract override fun toString(): String
+}
 
 @Composable
 fun LearnStatusIndicator(
@@ -73,8 +80,8 @@ fun LearnStatusIndicator(
 
         Circle(colorByLearnStatus(currentStatus))
         Text(
-            currentStatus.name,
-            fontSize = 12.sp,
+            currentStatus.toString(),
+            fontSize = 14.sp,
             fontWeight = FontWeight.SemiBold,
             style = LocalTextStyle.current.merge(
                 TextStyle(

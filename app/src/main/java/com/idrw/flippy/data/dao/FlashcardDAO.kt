@@ -7,7 +7,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import com.idrw.flippy.data.model.Flashcard
-import com.idrw.flippy.ui.view.deck.LearnStatus
+import com.idrw.flippy.ui.component.LearnStatus
 import kotlinx.coroutines.flow.Flow
 
 @Dao

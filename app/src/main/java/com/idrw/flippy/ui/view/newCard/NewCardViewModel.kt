@@ -10,7 +10,7 @@ import com.idrw.flippy.data.dao.DeckDAO
 import com.idrw.flippy.data.dao.FlashcardDAO
 import com.idrw.flippy.data.database.FlippyAppDB
 import com.idrw.flippy.data.model.Flashcard
-import com.idrw.flippy.ui.view.deck.LearnStatus
+import com.idrw.flippy.ui.component.LearnStatus
 import kotlinx.coroutines.launch
 
 class NewCardViewModel(context: Context, private val deckId: Int): ViewModel() {

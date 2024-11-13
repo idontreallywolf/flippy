@@ -3,7 +3,7 @@ package com.idrw.flippy.data.model
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
-import com.idrw.flippy.ui.view.deck.LearnStatus
+import com.idrw.flippy.ui.component.LearnStatus
 
 @Entity(
     tableName = "flashcards",

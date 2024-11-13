@@ -15,10 +15,6 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
@@ -26,8 +22,8 @@ import androidx.compose.ui.unit.dp
 import com.idrw.flippy.R
 import com.idrw.flippy.data.model.Flashcard
 import com.idrw.flippy.ui.component.Card
+import com.idrw.flippy.ui.component.LearnStatus
 import com.idrw.flippy.ui.component.LearnStatusIndicator
-import com.idrw.flippy.ui.view.deck.LearnStatus
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch

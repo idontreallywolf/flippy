@@ -11,8 +11,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import com.idrw.flippy.data.model.Flashcard
 import com.idrw.flippy.ui.component.Card
+import com.idrw.flippy.ui.component.LearnStatus
 import com.idrw.flippy.ui.component.LearnStatusIndicator
-import com.idrw.flippy.ui.view.deck.LearnStatus
 
 @Composable
 fun Flashcard(

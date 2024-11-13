@@ -10,10 +10,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
+import com.idrw.flippy.ui.component.LearnStatus
 import com.idrw.flippy.ui.view.flashcardPractice.FlashcardPractice
 import com.idrw.flippy.ui.view.deck.Deck
 import com.idrw.flippy.ui.view.deck.DeckViewModel
-import com.idrw.flippy.ui.view.deck.LearnStatus
 import com.idrw.flippy.ui.view.newCard.NewCard
 import com.idrw.flippy.ui.view.decks.Decks
 import com.idrw.flippy.ui.view.decks.DecksViewModel
