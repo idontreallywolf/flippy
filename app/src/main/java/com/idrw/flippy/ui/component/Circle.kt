@@ -15,8 +15,11 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun Circle(color: Color, size: Dp = 15.dp, onClick: (() -> Unit)? = null) {
     Box(modifier = Modifier
-        .size(size)
-        .clickable { onClick?.let { onClick() } }
+        .size(size).run {
+            if (onClick != null) {
+                clickable { onClick() }
+            } else this
+        }
         .clip(CircleShape)
         .background(color)
     )
