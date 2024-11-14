@@ -44,6 +44,7 @@ import com.idrw.flippy.LocalNavController
 import com.idrw.flippy.Routes
 import com.idrw.flippy.data.model.Flashcard
 import com.idrw.flippy.ui.component.Circle
+import com.idrw.flippy.ui.component.EmojiWithColor
 import com.idrw.flippy.ui.component.LearnStatus
 import com.idrw.flippy.ui.view.deck.component.FlashcardOptionMenu
 import com.idrw.flippy.ui.view.deck.component.FlashcardPreview
@@ -76,8 +77,15 @@ fun Deck(vm: DeckViewModel, deckId: Int) {
     var flashcardToModify by remember { mutableStateOf<Flashcard?>(null) }
 
     Box (modifier = Modifier.fillMaxSize()) {
-        PageContainer(title = currentDeck.title) {
+        PageContainer(title = currentDeck.title, icon = {
+            EmojiWithColor(
+                emoji = currentDeck.emoji,
+                emojiColor = currentDeck.emojiColor
+            )
+        }) {
             LazyColumn (verticalArrangement = Arrangement.spacedBy(20.dp)) {
+                item { Spacer(modifier = Modifier.size(10.dp)) }
+
                 items(flashcards) { flashcardData ->
                     FlashcardPreview(
                         flashcardData,
@@ -86,13 +94,14 @@ fun Deck(vm: DeckViewModel, deckId: Int) {
                             viewOptionsMenu = true
                         },
                         onClick = { navController.navigate(
-                            Routes.Flashcard(flashcardData.deckId, flashcardData.id, learnStatusFilter)
+                            Routes.Flashcard(flashcardData.deckId, flashcardData.id, learnStatusFilter.toString())
                         ) },
                         onChangeStatus = { newStatus ->
                             vm.updateFlashcardStatus(flashcardData, newStatus)
                         }
                     )
                 }
+
                 item { Spacer(modifier = Modifier.size(100.dp)) }
             }
         }

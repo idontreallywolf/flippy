@@ -36,6 +36,16 @@ enum class LearnStatus {
     NOT_LEARNED { override fun toString(): String = "Not Learned" };
 
     abstract override fun toString(): String
+
+    companion object {
+        fun fromString(s: String): LearnStatus = when(s) {
+            "Learned"     -> LEARNED
+            "Unsure"      -> UNSURE
+            "Not Learned" -> NOT_LEARNED
+
+            else -> LEARNED
+        }
+    }
 }
 
 @Composable

@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.unit.dp
 import com.idrw.flippy.data.model.Flashcard
+import com.idrw.flippy.ui.component.EmojiWithColor
 import com.idrw.flippy.ui.component.PageContainer
 import com.idrw.flippy.ui.view.flashcardPractice.component.Flashcard
 
@@ -19,7 +20,12 @@ fun FlashcardPractice(vm: FlashcardPracticeViewModel) {
 
     val currentDeck = vm.currentDeck.collectAsState().value
 
-    PageContainer (title = currentDeck.title) {
+    PageContainer (title = currentDeck.title, icon = {
+        EmojiWithColor(
+            emoji = currentDeck.emoji,
+            emojiColor = currentDeck.emojiColor
+        )
+    }) {
         HorizontalPager(state = pagerState, pageSpacing = 10.dp) { page ->
             val currentFlashcard = flashcards[page]
             Flashcard(

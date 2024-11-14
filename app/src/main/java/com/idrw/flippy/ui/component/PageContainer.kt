@@ -11,6 +11,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.traceEventEnd
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -20,6 +21,7 @@ import androidx.compose.ui.unit.sp
 fun PageContainer(
     modifier: Modifier = Modifier,
     title: String? = null,
+    icon: @Composable () -> Unit = {},
     content: @Composable () -> Unit
 ) {
     Column (
@@ -27,9 +29,9 @@ fun PageContainer(
             .fillMaxWidth()
             .fillMaxHeight()
             .background(MaterialTheme.colorScheme.background)
-            .padding(15.dp)
+            .padding(horizontal = 15.dp, vertical = 8.dp)
     ) {
-        title?.let { PageTitle(title) }
+        title?.let { PageHeading(title, icon) }
 
         Column (
             modifier = modifier
@@ -42,12 +44,15 @@ fun PageContainer(
 }
 
 @Composable
-fun PageTitle(title: String) {
+fun PageHeading(title: String, icon: @Composable () -> Unit) {
     Row (
         modifier = Modifier
-            .padding(15.dp),
-        horizontalArrangement = Arrangement.spacedBy(10.dp)
+            .fillMaxWidth()
+            .padding(horizontal = 15.dp, vertical = 8.dp),
+        horizontalArrangement = Arrangement.spacedBy(10.dp),
+        verticalAlignment = Alignment.CenterVertically
     ) {
+        icon()
         Text(
             text = title,
             fontSize = 20.sp,
