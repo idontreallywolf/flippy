@@ -22,7 +22,7 @@ class FlashcardPracticeViewModel(context: Context, deckId: Int, filterBy: LearnS
     val currentDeck = deckDao.findDeckById(deckId).stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
-        initialValue = Deck(1, title = "Loading...", cards = 0, progress = 0f)
+        initialValue = Deck(1, title = "Loading...", cards = 0, progress = 0f, emoji = "😁")
     )
 
     var flashcards: StateFlow<List<Flashcard>> =

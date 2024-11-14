@@ -71,15 +71,9 @@ fun Decks(vm: DecksViewModel) {
 
     Box (modifier = Modifier.fillMaxSize()) {
         PageContainer(title = "Decks") {
-            /*
-            Row {
-                EmojiWithColor(emoji = "💖")
-                EmojiWithColor(emoji = "🤣")
-                EmojiWithColor(emoji = "🎉")
-                EmojiWithColor(emoji = "👒")
-            }
-            */
             LazyColumn (modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.spacedBy(20.dp)) {
+                item { Spacer(Modifier.size(10.dp)) }
+
                 items(decks.value) {
                     DeckPreview(
                         it,
@@ -90,6 +84,8 @@ fun Decks(vm: DecksViewModel) {
                         }
                     )
                 }
+
+                item { Spacer(Modifier.size(100.dp)) }
             }
 
             if (showBottomSheet) {

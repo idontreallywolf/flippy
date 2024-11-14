@@ -22,7 +22,7 @@ fun DeckPreview(
     onClickOptions: () -> Unit
 ) {
     Card(onClick = { onClick() }, onLongClick = { onClickOptions() }) {
-        DeckPreviewHeader(deck.title, onClickOptions = { onClickOptions() })
+        DeckPreviewHeader(deck.title, deck.emoji, deck.emojiColor, onClickOptions = { onClickOptions() })
         DeckPreviewProgress(deck.cards, deck.cardsLearned)
     }
 }
@@ -30,6 +30,8 @@ fun DeckPreview(
 @Composable
 fun DeckPreviewHeader(
     title: String,
+    emoji: String,
+    emojiColor: Int,
     onClickOptions: () -> Unit
 ) {
     Row (
@@ -37,15 +39,22 @@ fun DeckPreviewHeader(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        DeckTitle(title)
+        DeckTitle(title, emoji, emojiColor)
         OptionsButton(onClick = { onClickOptions() })
     }
 }
 
 @Composable
-fun DeckTitle(title: String) {
-    Row (horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-        Icon(Icons.Default.Favorite, contentDescription = "")
+fun DeckTitle(
+    title: String,
+    emoji: String,
+    emojiColor: Int
+) {
+    Row (
+        horizontalArrangement = Arrangement.spacedBy(10.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        EmojiWithColor(emoji = emoji, emojiColor = emojiColor)
         Text(title, fontSize = 18.sp, fontWeight = FontWeight.SemiBold)
     }
 }

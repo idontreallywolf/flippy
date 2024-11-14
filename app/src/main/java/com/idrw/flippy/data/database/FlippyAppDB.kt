@@ -11,7 +11,7 @@ import com.idrw.flippy.data.model.Flashcard
 import kotlin.concurrent.Volatile
 
 @Database(
-    version = 4,
+    version = 6,
     entities = [Flashcard::class, Deck::class],
     exportSchema = false
 )

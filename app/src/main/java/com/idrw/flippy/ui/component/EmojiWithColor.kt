@@ -3,6 +3,7 @@ package com.idrw.flippy.ui.component
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -13,18 +14,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.idrw.flippy.utility.getEmojiColor
+import androidx.compose.ui.unit.sp
 
 @Composable
-fun EmojiWithColor(modifier: Modifier = Modifier, emoji: String) {
+fun EmojiWithColor(modifier: Modifier = Modifier, emoji: String, emojiColor: Int) {
     Row (modifier = Modifier
-        .size(30.dp)
+        .size(45.dp)
         .clip(CircleShape)
-        .background(Color(getEmojiColor(emoji)).copy(alpha = 0.3f))
+        .background(Color(emojiColor).copy(alpha = 0.3f))
         .padding(2.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
     ) {
-        Text(emoji)
+        Text(emoji, fontSize = 25.sp)
     }
 }

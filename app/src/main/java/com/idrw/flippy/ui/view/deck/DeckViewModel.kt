@@ -23,7 +23,7 @@ class DeckViewModel(context: Context, deckId: Int): ViewModel() {
     val currentDeck = deckDao.findDeckById(deckId).stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
-        initialValue = Deck(1, title = "Loading...", cards = 0, progress = 0f)
+        initialValue = Deck(1, title = "Loading...", cards = 0, progress = 0f, emoji = "😁")
     )
 
     var flashcards: StateFlow<List<Flashcard>> = flashcardDao.getAllByDeckId(deckId).stateIn(

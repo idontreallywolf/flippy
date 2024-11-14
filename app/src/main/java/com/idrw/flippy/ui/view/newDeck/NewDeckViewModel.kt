@@ -19,9 +19,13 @@ class NewDeckViewModel(context: Context): ViewModel() {
     var deckCreated by mutableStateOf(false)
         private set
 
-    fun createDeck(title: String) {
+    fun createDeck(title: String, emoji: String, emojiColor: Int) {
         viewModelScope.launch {
-            dao.insert(Deck(title = title, emoji = "😀"))
+            dao.insert(Deck(
+                title = title,
+                emoji = emoji,
+                emojiColor = emojiColor
+            ))
             deckCreated = true
         }
     }
