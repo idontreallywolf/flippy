@@ -1,6 +1,5 @@
 package com.idrw.flippy.ui.view.deck
 
-import android.widget.Space
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -15,7 +14,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Button
@@ -23,8 +21,6 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -36,9 +32,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.idrw.flippy.LocalNavController
 import com.idrw.flippy.Routes
@@ -49,12 +43,8 @@ import com.idrw.flippy.ui.component.LearnStatus
 import com.idrw.flippy.ui.view.deck.component.FlashcardOptionMenu
 import com.idrw.flippy.ui.view.deck.component.FlashcardPreview
 import com.idrw.flippy.ui.component.PageContainer
-import com.idrw.flippy.ui.theme.CustomGreen
-import com.idrw.flippy.ui.theme.CustomOrange
-import com.idrw.flippy.ui.theme.CustomRed
+import com.idrw.flippy.ui.view.deck.component.DeckFilterMenu
 import com.idrw.flippy.utility.colorByLearnStatus
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -172,41 +162,4 @@ fun Deck(vm: DeckViewModel, deckId: Int) {
         sheetState = sheetState,
         onDismiss = { viewOptionsMenu = false }
     )
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun DeckFilterMenu(
-    isVisible: Boolean,
-    onSelectFilter: (filter: LearnStatus?) -> Unit,
-    scope: CoroutineScope,
-    sheetState: SheetState,
-    onDismiss: () -> Unit
-) {
-    if (!isVisible) {
-        return
-    }
-
-    ModalBottomSheet(
-        modifier = Modifier.padding(5.dp),
-        onDismissRequest = { scope.launch {
-            sheetState.hide()
-        }.invokeOnCompletion {
-            onDismiss()
-        } },
-        sheetState = sheetState
-    ) {
-        Row (
-            modifier = Modifier
-                .fillMaxWidth()
-                .clip(RoundedCornerShape(5.dp))
-                .padding(10.dp),
-            horizontalArrangement = Arrangement.spacedBy(10.dp)
-        ) {
-            Circle(Color.LightGray, size = 15.dp, onClick = { onSelectFilter(null) })
-            Circle(CustomGreen, size = 15.dp, onClick = { onSelectFilter(LearnStatus.LEARNED) })
-            Circle(CustomOrange, size = 15.dp, onClick = { onSelectFilter(LearnStatus.UNSURE) })
-            Circle(CustomRed, size = 15.dp, onClick = { onSelectFilter(LearnStatus.NOT_LEARNED) })
-        }
-    }
 }
