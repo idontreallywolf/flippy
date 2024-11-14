@@ -16,16 +16,16 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
+
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Warning
+
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 
@@ -36,26 +36,19 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 
 import com.idrw.flippy.LocalNavController
-import com.idrw.flippy.R
 import com.idrw.flippy.Routes
 import com.idrw.flippy.data.model.Deck
 import com.idrw.flippy.ui.component.DeckPreview
-import com.idrw.flippy.ui.component.EmojiWithColor
 import com.idrw.flippy.ui.component.PageContainer
-import com.idrw.flippy.ui.theme.CustomRed
-import com.idrw.flippy.utility.getEmojiColor
-
-import kotlinx.coroutines.launch
+import com.idrw.flippy.ui.view.decks.component.DeckOptionsMenu
+import com.idrw.flippy.ui.view.decks.component.DeleteDeckConfirmDialog
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -63,6 +56,7 @@ fun Decks(vm: DecksViewModel) {
     val sheetState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
     var showBottomSheet by remember { mutableStateOf(false) }
+    var showDeleteDeckConfirmDialog by remember { mutableStateOf(false) }
 
     val navController = LocalNavController.current
     val decks = vm.decks.collectAsState()
@@ -86,39 +80,6 @@ fun Decks(vm: DecksViewModel) {
                 }
 
                 item { Spacer(Modifier.size(100.dp)) }
-            }
-
-            if (showBottomSheet) {
-                ModalBottomSheet(
-                    modifier = Modifier.padding(5.dp),
-                    onDismissRequest = { showBottomSheet = false },
-                    sheetState = sheetState
-                ) {
-                    Row (
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clip(RoundedCornerShape(5.dp))
-                            .background(CustomRed)
-                            .clickable {scope.launch { sheetState.hide() }.invokeOnCompletion {
-                                if (!sheetState.isVisible) {
-                                    deckToModify?.let {
-                                        vm.deleteDeck(deckToModify!!)
-                                    }
-                                    deckToModify = null
-                                    showBottomSheet = false
-                                }
-                            }}
-                            .padding(10.dp),
-                        horizontalArrangement = Arrangement.spacedBy(10.dp)
-                    ) {
-                        Icon(
-                            painter = painterResource(R.drawable.trash),
-                            tint = Color.White,
-                            contentDescription = ""
-                        )
-                        Text("Delete deck")
-                    }
-                }
             }
         }
 
@@ -153,5 +114,32 @@ fun Decks(vm: DecksViewModel) {
                 }
             }
         }
+
+        DeckOptionsMenu(
+            isVisible = showBottomSheet,
+            scope = scope,
+            sheetState = sheetState,
+            onDismiss = { showBottomSheet = false },
+            onClickDelete = { showDeleteDeckConfirmDialog = true }
+        )
+
+
+        DeleteDeckConfirmDialog(
+            isVisible = showDeleteDeckConfirmDialog,
+            dialogTitle = "Delete deck",
+            dialogText = "This action is not reversible.",
+            onConfirm = {
+                deckToModify?.let { vm.deleteDeck(deckToModify!!) }
+                deckToModify = null
+                showBottomSheet = false
+                showDeleteDeckConfirmDialog = false
+            },
+            onDismiss = {
+                deckToModify = null
+                showBottomSheet = false
+                showDeleteDeckConfirmDialog = false
+            },
+            icon = Icons.Default.Warning
+        )
     }
 }
