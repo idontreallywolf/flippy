@@ -20,7 +20,8 @@ fun OutlinedInput(
 ) {
     OutlinedTextField(
         modifier = Modifier.fillMaxWidth(),
-        label = { Text(label) },
+        //label = { Text(label) },
+        placeholder = { Text(label) },
         value = value,
         onValueChange = onValueChange,
         isError = isError,
