@@ -1,5 +1,7 @@
 [versions]
 agp = "8.6.1"
+composeEmojiPicker = "1.0.0-alpha16"
+emojiCore = "1.0.13"
 kotlin = "2.0.21"
 coreKtx = "1.15.0"
 junit = "4.13.2"
@@ -38,6 +40,8 @@ androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
 androidx-palette = { group = "androidx.palette", name = "palette", version.ref = "palette" }
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxJsonSerialization" }
+compose-emoji-picker = { module = "com.github.Abhimanyu14:compose-emoji-picker", version.ref = "composeEmojiPicker" }
+emoji-core = { module = "com.github.Abhimanyu14:emoji-core", version.ref = "emojiCore" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

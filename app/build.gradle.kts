@@ -59,9 +59,10 @@ dependencies {
     implementation(libs.androidx.navigation.ui)
     implementation(libs.androidx.navigation.dynamic.features.fragment)
     implementation(libs.androidx.palette)
-
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
+    implementation(libs.compose.emoji.picker)
+    implementation(libs.emoji.core)
 
     ksp(libs.androidx.room.compiler)
 
