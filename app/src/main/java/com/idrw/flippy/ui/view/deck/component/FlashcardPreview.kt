@@ -37,7 +37,10 @@ fun FlashcardPreview(
 ) {
     Card (onLongClick = onLongClick, onClick = onClick) {
         Row { Text(flashcardData.frontText) }
-        Row { LearnStatusIndicator(flashcardData.learnStatus, onChangeStatus = onChangeStatus) }
+        Row { LearnStatusIndicator(
+            currentStatus = flashcardData.learnStatus,
+            onChangeStatus = onChangeStatus)
+        }
     }
 }
 

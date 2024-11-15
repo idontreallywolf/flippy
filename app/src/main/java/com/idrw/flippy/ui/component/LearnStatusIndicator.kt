@@ -50,13 +50,14 @@ enum class LearnStatus {
 
 @Composable
 fun LearnStatusIndicator(
+    modifier: Modifier = Modifier,
     currentStatus: LearnStatus,
     onChangeStatus: (s: LearnStatus) -> Unit
 ) {
     var isChoosing by remember { mutableStateOf(false) }
 
     Row (
-        modifier = Modifier
+        modifier = modifier
             .clip(CircleShape)
             .clickable { isChoosing = true }
             .border(
