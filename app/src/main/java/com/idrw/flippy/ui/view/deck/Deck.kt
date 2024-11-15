@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -34,6 +35,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.idrw.flippy.LocalNavController
 import com.idrw.flippy.Routes
 import com.idrw.flippy.data.model.Flashcard
@@ -90,7 +92,8 @@ fun Deck(vm: DeckViewModel, deckId: Int) {
             LazyColumn (verticalArrangement = Arrangement.spacedBy(20.dp)) {
                 item { Spacer(modifier = Modifier.size(10.dp)) }
 
-                items(flashcards) { flashcardData ->
+
+                itemsIndexed(flashcards) { index, flashcardData ->
                     FlashcardPreview(
                         flashcardData,
                         onLongClick = {
@@ -98,7 +101,7 @@ fun Deck(vm: DeckViewModel, deckId: Int) {
                             viewOptionsMenu = true
                         },
                         onClick = { navController.navigate(
-                            Routes.Flashcard(flashcardData.deckId, flashcardData.id, learnStatusFilter.toString())
+                            Routes.Flashcard(flashcardData.deckId, flashcardData.id, learnStatusFilter.toString(), index)
                         ) },
                         onChangeStatus = { newStatus ->
                             vm.updateFlashcardStatus(flashcardData, newStatus)

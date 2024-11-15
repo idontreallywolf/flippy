@@ -11,12 +11,13 @@ import com.idrw.flippy.ui.component.PageContainer
 import com.idrw.flippy.ui.view.flashcardPractice.component.Flashcard
 
 @Composable
-fun FlashcardPractice(vm: FlashcardPracticeViewModel) {
+fun FlashcardPractice(vm: FlashcardPracticeViewModel, pageIndex: Int) {
     val flashcards: List<Flashcard> = vm.flashcards.collectAsState().value
 
-    val pagerState = rememberPagerState(pageCount = {
-        flashcards.size
-    })
+    val pagerState = rememberPagerState(
+        pageCount = { flashcards.size },
+        initialPage = pageIndex
+    )
 
     val currentDeck = vm.currentDeck.collectAsState().value
 

@@ -29,7 +29,7 @@ data object Routes {
     @Serializable data class Deck(val deckId: Int)
     @Serializable data object NewDeck
     @Serializable data class NewCard(val deckId: Int)
-    @Serializable data class Flashcard(val deckId: Int, val cardId: Int, val filterBy: String)
+    @Serializable data class Flashcard(val deckId: Int, val cardId: Int, val filterBy: String, val pageIndex: Int)
 }
 
 val LocalNavController = compositionLocalOf<NavHostController> {
@@ -86,7 +86,7 @@ fun Navigation(content: @Composable (page: @Composable () -> Unit) -> Unit) {
                     val args = it.toRoute<Routes.Flashcard>()
                     val learnStatus = if (args.filterBy == "null") null else LearnStatus.fromString(args.filterBy)
                     val vm = FlashcardPracticeViewModel(LocalContext.current, args.deckId, learnStatus)
-                    FlashcardPractice(vm)
+                    FlashcardPractice(vm, args.pageIndex)
                 }
             }
         }
