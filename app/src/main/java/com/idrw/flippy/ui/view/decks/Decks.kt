@@ -41,14 +41,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 
 import com.idrw.flippy.LocalNavController
 import com.idrw.flippy.Routes
 import com.idrw.flippy.data.model.Deck
 import com.idrw.flippy.ui.component.DeckPreview
+import com.idrw.flippy.ui.component.EmojiWithColor
 import com.idrw.flippy.ui.component.PageContainer
 import com.idrw.flippy.ui.view.decks.component.DeckOptionsMenu
 import com.idrw.flippy.ui.view.decks.component.DeleteDeckConfirmDialog
+import com.idrw.flippy.utility.getEmojiColor
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -64,7 +67,23 @@ fun Decks(vm: DecksViewModel) {
     var deckToModify by remember { mutableStateOf<Deck?>(null) }
 
     Box (modifier = Modifier.fillMaxSize()) {
-        PageContainer(title = "Decks") {
+        PageContainer(title = "Decks", icon = {
+            EmojiWithColor(emoji = "🗂️", emojiColor = getEmojiColor("🗂️"))
+        }) {
+            if (decks.value.isEmpty()) {
+                Row (
+                    modifier = Modifier.fillMaxWidth().padding(20.dp),
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    Text(
+                        text = "There are no decks to display.",
+                        color = MaterialTheme.colorScheme.onBackground,
+                        fontSize = 20.sp
+                    )
+                }
+                return@PageContainer
+            }
+
             LazyColumn (modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.spacedBy(20.dp)) {
                 item { Spacer(Modifier.size(10.dp)) }
 

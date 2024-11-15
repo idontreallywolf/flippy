@@ -73,6 +73,20 @@ fun Deck(vm: DeckViewModel, deckId: Int) {
                 emojiColor = currentDeck.emojiColor
             )
         }) {
+            if (flashcards.isEmpty()) {
+                Row (
+                    modifier = Modifier.fillMaxWidth().padding(20.dp),
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    Text(
+                        text = "There are no cards to display.",
+                        color = MaterialTheme.colorScheme.onBackground,
+                        fontSize = 20.sp
+                    )
+                }
+                return@PageContainer
+            }
+
             LazyColumn (verticalArrangement = Arrangement.spacedBy(20.dp)) {
                 item { Spacer(modifier = Modifier.size(10.dp)) }
 
