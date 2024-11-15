@@ -48,16 +48,15 @@ fun DeckFilterMenu(
         sheetState = sheetState
     ) {
         Row (
-            modifier = Modifier
-                .fillMaxWidth()
-                .clip(RoundedCornerShape(5.dp))
-                .padding(10.dp),
-            horizontalArrangement = Arrangement.spacedBy(10.dp)
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center
         ) {
-            ColoredFilterButton(Color.Gray, onClick = { onSelectFilter(null) })
-            ColoredFilterButton(CustomGreen, onClick = { onSelectFilter(LearnStatus.LEARNED) })
-            ColoredFilterButton(CustomOrange, onClick = { onSelectFilter(LearnStatus.UNSURE) })
-            ColoredFilterButton(CustomRed, onClick = { onSelectFilter(LearnStatus.NOT_LEARNED) })
+            Row (horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                ColoredFilterButton(Color.Gray, onClick = { onSelectFilter(null) })
+                ColoredFilterButton(CustomGreen, onClick = { onSelectFilter(LearnStatus.LEARNED) })
+                ColoredFilterButton(CustomOrange, onClick = { onSelectFilter(LearnStatus.UNSURE) })
+                ColoredFilterButton(CustomRed, onClick = { onSelectFilter(LearnStatus.NOT_LEARNED) })
+            }
         }
     }
 }
