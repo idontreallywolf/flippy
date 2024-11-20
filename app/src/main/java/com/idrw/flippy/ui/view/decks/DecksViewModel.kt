@@ -8,7 +8,6 @@ import com.idrw.flippy.data.database.FlippyAppDB
 import com.idrw.flippy.data.model.Deck
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 

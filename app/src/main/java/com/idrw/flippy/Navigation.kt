@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -46,7 +47,10 @@ fun Navigation(content: @Composable (page: @Composable () -> Unit) -> Unit) {
                     enterTransition = { slideIntoContainer(towards = AnimatedContentTransitionScope.SlideDirection.Right) },
                     exitTransition = { slideOutOfContainer(towards = AnimatedContentTransitionScope.SlideDirection.Left) }
                 ) {
-                    val vm = DecksViewModel(context = LocalContext.current)
+                    val context = LocalContext.current
+                    val vm = viewModel {
+                        DecksViewModel(context)
+                    }
                     Decks(vm)
                 }
 
@@ -58,7 +62,10 @@ fun Navigation(content: @Composable (page: @Composable () -> Unit) -> Unit) {
                     popExitTransition = { slideOutOfContainer(towards = AnimatedContentTransitionScope.SlideDirection.Right) },
                 ) {
                     val args = it.toRoute<Routes.Deck>()
-                    val vm = DeckViewModel(LocalContext.current, args.deckId)
+                    val context = LocalContext.current
+                    val vm = viewModel {
+                        DeckViewModel(context, args.deckId)
+                    }
                     Deck(vm, args.deckId)
                 }
 
@@ -67,7 +74,10 @@ fun Navigation(content: @Composable (page: @Composable () -> Unit) -> Unit) {
                     exitTransition = { slideOutOfContainer(towards = AnimatedContentTransitionScope.SlideDirection.Right) }
                 ) {
                     val args = it.toRoute<Routes.NewCard>()
-                    val vm = NewCardViewModel(LocalContext.current, args.deckId)
+                    val context = LocalContext.current
+                    val vm = viewModel {
+                        NewCardViewModel(context, args.deckId)
+                    }
                     NewCard(vm)
                 }
 
@@ -75,7 +85,10 @@ fun Navigation(content: @Composable (page: @Composable () -> Unit) -> Unit) {
                     enterTransition = { slideIntoContainer(towards = AnimatedContentTransitionScope.SlideDirection.Left) },
                     popExitTransition = { slideOutOfContainer(towards = AnimatedContentTransitionScope.SlideDirection.Right) }
                 ) {
-                    val vm = NewDeckViewModel(LocalContext.current)
+                    val context = LocalContext.current
+                    val vm = viewModel {
+                        NewDeckViewModel(context)
+                    }
                     NewDeck(vm)
                 }
 
@@ -84,8 +97,11 @@ fun Navigation(content: @Composable (page: @Composable () -> Unit) -> Unit) {
                     popExitTransition = { slideOutOfContainer(towards = AnimatedContentTransitionScope.SlideDirection.Right) }
                 ) {
                     val args = it.toRoute<Routes.Flashcard>()
+                    val context = LocalContext.current
                     val learnStatus = if (args.filterBy == "null") null else LearnStatus.fromString(args.filterBy)
-                    val vm = FlashcardPracticeViewModel(LocalContext.current, args.deckId, learnStatus)
+                    val vm = viewModel {
+                        FlashcardPracticeViewModel(context, args.deckId, learnStatus)
+                    }
                     FlashcardPractice(vm, args.pageIndex)
                 }
             }
