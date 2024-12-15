@@ -16,6 +16,7 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -39,6 +40,7 @@ import com.idrw.flippy.LocalNavController
 import com.idrw.flippy.Routes
 import com.idrw.flippy.data.model.Flashcard
 import com.idrw.flippy.ui.component.Circle
+import com.idrw.flippy.ui.component.DeleteConfirmDialog
 import com.idrw.flippy.ui.component.EmojiWithColor
 import com.idrw.flippy.ui.view.deck.component.FlashcardOptionMenu
 import com.idrw.flippy.ui.view.deck.component.FlashcardPreview
@@ -53,6 +55,7 @@ fun Deck(vm: DeckViewModel, deckId: Int) {
     val scope = rememberCoroutineScope()
     var viewOptionsMenu by remember { mutableStateOf(false) }
     var viewFilterMenu by remember { mutableStateOf(false) }
+    var showDeleteCardConfirmDialog by remember { mutableStateOf(false) }
     val navController = LocalNavController.current
 
     val flashcards = vm.flashcards.collectAsState()
@@ -166,14 +169,30 @@ fun Deck(vm: DeckViewModel, deckId: Int) {
     FlashcardOptionMenu(
         isVisible = viewOptionsMenu,
         onClickDelete = {
-            flashcardToModify?.let {
-                vm.deleteFlashcard(flashcardToModify!!)
-            }
             viewOptionsMenu = false
+            showDeleteCardConfirmDialog = true
         },
         onClickEdit = {},
         scope = scope,
         sheetState = sheetState,
         onDismiss = { viewOptionsMenu = false }
+    )
+
+    DeleteConfirmDialog(
+        isVisible = showDeleteCardConfirmDialog,
+        dialogTitle = "Delete flashcard",
+        dialogText = "This action is not reversible.",
+        onConfirm = {
+            flashcardToModify?.let {
+                vm.deleteFlashcard(flashcardToModify!!)
+            }
+            flashcardToModify = null
+            showDeleteCardConfirmDialog = false
+        },
+        onDismiss = {
+            flashcardToModify = null
+            showDeleteCardConfirmDialog = false
+        },
+        icon = Icons.Default.Warning
     )
 }
