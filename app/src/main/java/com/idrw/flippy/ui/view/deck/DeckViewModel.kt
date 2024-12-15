@@ -1,6 +1,9 @@
 package com.idrw.flippy.ui.view.deck
 
 import android.content.Context
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -19,6 +22,8 @@ class DeckViewModel(context: Context, deckId: Int): ViewModel() {
     var db = FlippyAppDB.getDatabase(context)
     var flashcardDao: FlashcardDAO = db.flashcardDao()
     var deckDao: DeckDAO = db.deckDao()
+    var learnStatusFilter by mutableStateOf<LearnStatus?>(LearnStatus.NOT_LEARNED)
+        private set
 
     val currentDeck = deckDao.findDeckById(deckId).stateIn(
         scope = viewModelScope,
@@ -45,7 +50,7 @@ class DeckViewModel(context: Context, deckId: Int): ViewModel() {
         }
     }
 
-    fun filterFlashcards(learnStatus: LearnStatus): List<Flashcard> {
-        return flashcards.value.filter { it.learnStatus == learnStatus }
+    fun setFilter(s: LearnStatus?) {
+        learnStatusFilter = s
     }
 }

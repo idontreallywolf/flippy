@@ -40,7 +40,6 @@ import com.idrw.flippy.Routes
 import com.idrw.flippy.data.model.Flashcard
 import com.idrw.flippy.ui.component.Circle
 import com.idrw.flippy.ui.component.EmojiWithColor
-import com.idrw.flippy.ui.component.LearnStatus
 import com.idrw.flippy.ui.view.deck.component.FlashcardOptionMenu
 import com.idrw.flippy.ui.view.deck.component.FlashcardPreview
 import com.idrw.flippy.ui.component.PageContainer
@@ -54,13 +53,12 @@ fun Deck(vm: DeckViewModel, deckId: Int) {
     val scope = rememberCoroutineScope()
     var viewOptionsMenu by remember { mutableStateOf(false) }
     var viewFilterMenu by remember { mutableStateOf(false) }
-    var learnStatusFilter by remember { mutableStateOf<LearnStatus?>(LearnStatus.NOT_LEARNED) }
     val navController = LocalNavController.current
 
     val flashcards = vm.flashcards.collectAsState()
         .value.filter {
-            (learnStatusFilter == null) ||
-                it.learnStatus == learnStatusFilter
+            (vm.learnStatusFilter == null) ||
+                it.learnStatus == vm.learnStatusFilter
         }
 
     val currentDeck = vm.currentDeck.collectAsState().value
@@ -100,7 +98,7 @@ fun Deck(vm: DeckViewModel, deckId: Int) {
                             viewOptionsMenu = true
                         },
                         onClick = { navController.navigate(
-                            Routes.Flashcard(flashcardData.deckId, flashcardData.id, learnStatusFilter.toString(), index)
+                            Routes.Flashcard(flashcardData.deckId, flashcardData.id, vm.learnStatusFilter.toString(), index)
                         ) },
                         onChangeStatus = { newStatus ->
                             vm.updateFlashcardStatus(flashcardData, newStatus)
@@ -151,7 +149,7 @@ fun Deck(vm: DeckViewModel, deckId: Int) {
                         contentColor = MaterialTheme.colorScheme.onBackground
                     )
                 ) {
-                    Circle(colorByLearnStatus(learnStatusFilter))
+                    Circle(colorByLearnStatus(vm.learnStatusFilter))
                 }
             }
         }
@@ -159,7 +157,7 @@ fun Deck(vm: DeckViewModel, deckId: Int) {
 
     DeckFilterMenu(
         isVisible = viewFilterMenu,
-        onSelectFilter = { learnStatusFilter = it },
+        onSelectFilter = { vm.setFilter(it) },
         scope = scope,
         sheetState = sheetState,
         onDismiss = { viewFilterMenu = false }
