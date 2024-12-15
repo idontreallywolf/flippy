@@ -30,7 +30,12 @@ data object Routes {
     @Serializable data class Deck(val deckId: Int)
     @Serializable data object NewDeck
     @Serializable data class NewCard(val deckId: Int)
-    @Serializable data class Flashcard(val deckId: Int, val cardId: Int, val filterBy: String, val pageIndex: Int)
+    @Serializable data class Flashcard(
+        val deckId: Int,
+        val cardId: Int,
+        val filterBy: String,
+        val pageIndex: Int
+    )
 }
 
 val LocalNavController = compositionLocalOf<NavHostController> {
