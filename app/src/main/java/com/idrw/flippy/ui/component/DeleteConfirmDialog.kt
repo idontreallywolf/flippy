@@ -1,4 +1,4 @@
-package com.idrw.flippy.ui.view.decks.component
+package com.idrw.flippy.ui.component
 
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
@@ -10,7 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
 
 @Composable
-fun DeleteDeckConfirmDialog(
+fun DeleteConfirmDialog(
     isVisible: Boolean,
     onDismiss: () -> Unit,
     onConfirm: () -> Unit,

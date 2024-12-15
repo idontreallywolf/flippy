@@ -50,7 +50,7 @@ import com.idrw.flippy.ui.component.DeckPreview
 import com.idrw.flippy.ui.component.EmojiWithColor
 import com.idrw.flippy.ui.component.PageContainer
 import com.idrw.flippy.ui.view.decks.component.DeckOptionsMenu
-import com.idrw.flippy.ui.view.decks.component.DeleteDeckConfirmDialog
+import com.idrw.flippy.ui.component.DeleteConfirmDialog
 import com.idrw.flippy.utility.getEmojiColor
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -143,7 +143,7 @@ fun Decks(vm: DecksViewModel) {
         )
 
 
-        DeleteDeckConfirmDialog(
+        DeleteConfirmDialog(
             isVisible = showDeleteDeckConfirmDialog,
             dialogTitle = "Delete deck",
             dialogText = "This action is not reversible.",
