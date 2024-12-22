@@ -16,9 +16,13 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -34,9 +38,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.idrw.flippy.LocalNavController
+import com.idrw.flippy.R
 import com.idrw.flippy.Routes
 import com.idrw.flippy.data.model.Flashcard
 import com.idrw.flippy.ui.component.Circle
@@ -56,7 +63,9 @@ fun Deck(vm: DeckViewModel, deckId: Int) {
     var viewOptionsMenu by remember { mutableStateOf(false) }
     var viewFilterMenu by remember { mutableStateOf(false) }
     var showDeleteCardConfirmDialog by remember { mutableStateOf(false) }
+    var showDeleteDeckConfirmDialog by remember { mutableStateOf(false) }
     val navController = LocalNavController.current
+
 
     val flashcards = vm.flashcards.collectAsState()
         .value.filter {
@@ -66,15 +75,75 @@ fun Deck(vm: DeckViewModel, deckId: Int) {
 
     val currentDeck = vm.currentDeck.collectAsState().value
 
+
+    if (vm.deckDeleted == true) {
+        navController.navigateUp()
+        return
+    }
+
     var flashcardToModify by remember { mutableStateOf<Flashcard?>(null) }
 
+    var expanded by remember { mutableStateOf(false) }
+    var menuExpanded by remember { mutableStateOf(false) }
+
     Box (modifier = Modifier.fillMaxSize()) {
-        PageContainer(title = currentDeck.title, icon = {
-            EmojiWithColor(
-                emoji = currentDeck.emoji,
-                emojiColor = currentDeck.emojiColor
-            )
-        }) {
+        PageContainer(
+            title = currentDeck.title,
+            icon = {
+                EmojiWithColor(
+                    emoji = currentDeck.emoji,
+                    emojiColor = currentDeck.emojiColor
+                )
+            },
+            dropDownOptions = {
+                Box {
+                    Button(onClick = { menuExpanded = true }) {
+                        Icon(imageVector = Icons.Default.Menu, contentDescription = "")
+                    }
+
+                    DropdownMenu(
+                        modifier = Modifier
+                            .fillMaxWidth(0.8f)
+                            .background(MaterialTheme.colorScheme.background)
+                            .padding(start = 15.dp, end = 15.dp),
+                        expanded = menuExpanded,
+                        onDismissRequest = { menuExpanded = false }
+                    ) {
+                        DropdownMenuItem(
+                            text = {
+                                Row (modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                                    Icon(
+                                        imageVector = Icons.Default.Edit,
+                                        tint = Color.White,
+                                        contentDescription = ""
+                                    )
+                                    Text("Edit Deck")
+                                }
+                            },
+                            onClick = {
+                                expanded = false
+                                navController.navigate(Routes.EditDeck(deckId))
+                            }
+                        )
+                        DropdownMenuItem(
+                            text = {
+                                Row (modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                                    Icon(
+                                        painter = painterResource(R.drawable.trash),
+                                        tint = Color.White,
+                                        contentDescription = ""
+                                    )
+                                    Text("Delete Deck")
+                                }
+                            },
+                            onClick = {
+                                showDeleteDeckConfirmDialog = true
+                            }
+                        )
+                    }
+                }
+            }
+        ) {
             if (flashcards.isEmpty()) {
                 Row (
                     modifier = Modifier.fillMaxWidth().padding(20.dp),
@@ -192,6 +261,20 @@ fun Deck(vm: DeckViewModel, deckId: Int) {
         onDismiss = {
             flashcardToModify = null
             showDeleteCardConfirmDialog = false
+        },
+        icon = Icons.Default.Warning
+    )
+
+    DeleteConfirmDialog(
+        isVisible = showDeleteDeckConfirmDialog,
+        dialogTitle = "Delete deck",
+        dialogText = "This action is not reversible.",
+        onConfirm = {
+            vm.deleteDeck(vm.currentDeck.value)
+            showDeleteDeckConfirmDialog = false
+        },
+        onDismiss = {
+            showDeleteDeckConfirmDialog = false
         },
         icon = Icons.Default.Warning
     )

@@ -139,7 +139,12 @@ fun Decks(vm: DecksViewModel) {
             scope = scope,
             sheetState = sheetState,
             onDismiss = { showBottomSheet = false },
-            onClickDelete = { showDeleteDeckConfirmDialog = true }
+            onClickDelete = { showDeleteDeckConfirmDialog = true },
+            onClickEdit = { deckToModify.let {
+                navController.navigate(
+                    Routes.EditDeck(deckToModify!!.id)
+                )
+            }}
         )
 
 

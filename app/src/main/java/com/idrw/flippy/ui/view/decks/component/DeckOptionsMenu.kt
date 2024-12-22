@@ -4,11 +4,16 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
@@ -30,6 +35,7 @@ fun DeckOptionsMenu(
     scope: CoroutineScope,
     sheetState: SheetState,
     onClickDelete: () -> Unit,
+    onClickEdit: () -> Unit,
     onDismiss: () -> Unit
 ) {
     if (!isVisible) return
@@ -42,13 +48,42 @@ fun DeckOptionsMenu(
         Row (
             modifier = Modifier
                 .fillMaxWidth()
+                .padding(start = 10.dp, end = 10.dp)
+                .clip(RoundedCornerShape(5.dp))
+                .background(MaterialTheme.colorScheme.background)
+                .clickable {
+                    scope.launch { sheetState.hide() }.invokeOnCompletion {
+                        if (!sheetState.isVisible) {
+                            onClickEdit()
+                        }
+                    }
+                }
+                .padding(10.dp),
+            horizontalArrangement = Arrangement.spacedBy(10.dp)
+        ) {
+            Icon(
+                imageVector = Icons.Default.Edit,
+                tint = Color.White,
+                contentDescription = ""
+            )
+            Text("Edit Deck")
+        }
+
+        Spacer(modifier = Modifier.size(10.dp))
+
+        Row (
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 10.dp, end = 10.dp)
                 .clip(RoundedCornerShape(5.dp))
                 .background(CustomRed)
-                .clickable {scope.launch { sheetState.hide() }.invokeOnCompletion {
-                    if (!sheetState.isVisible) {
-                        onClickDelete()
+                .clickable {
+                    scope.launch { sheetState.hide() }.invokeOnCompletion {
+                        if (!sheetState.isVisible) {
+                            onClickDelete()
+                        }
                     }
-                }}
+                }
                 .padding(10.dp),
             horizontalArrangement = Arrangement.spacedBy(10.dp)
         ) {
@@ -57,7 +92,7 @@ fun DeckOptionsMenu(
                 tint = Color.White,
                 contentDescription = ""
             )
-            Text("Delete deck")
+            Text("Delete Deck")
         }
     }
 }

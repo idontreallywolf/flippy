@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.traceEventEnd
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -22,7 +21,8 @@ fun PageContainer(
     modifier: Modifier = Modifier,
     title: String? = null,
     icon: @Composable () -> Unit = {},
-    content: @Composable () -> Unit
+    dropDownOptions: (@Composable () -> Unit)? = null,
+    content: @Composable () -> Unit,
 ) {
     Column (
         modifier = modifier
@@ -31,7 +31,7 @@ fun PageContainer(
             .background(MaterialTheme.colorScheme.background)
             .padding(horizontal = 15.dp, vertical = 8.dp)
     ) {
-        title?.let { PageHeading(title, icon) }
+        title?.let { PageHeading(title, icon, dropDownOptions) }
 
         Column (
             modifier = modifier
@@ -44,20 +44,32 @@ fun PageContainer(
 }
 
 @Composable
-fun PageHeading(title: String, icon: @Composable () -> Unit) {
+fun PageHeading(
+    title: String,
+    icon: @Composable () -> Unit,
+    dropDownOptions: (@Composable () -> Unit)? = null
+) {
     Row (
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 15.dp, vertical = 8.dp),
-        horizontalArrangement = Arrangement.spacedBy(10.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        icon()
-        Text(
-            text = title,
-            fontSize = 20.sp,
-            fontWeight = FontWeight.SemiBold,
-            color = MaterialTheme.colorScheme.onBackground
-        )
+        Row (
+            modifier = Modifier,
+            horizontalArrangement = Arrangement.spacedBy(10.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            icon()
+            Text(
+                text = title,
+                fontSize = 20.sp,
+                fontWeight = FontWeight.SemiBold,
+                color = MaterialTheme.colorScheme.onBackground
+            )
+        }
+
+        dropDownOptions?.let { dropDownOptions() }
     }
 }

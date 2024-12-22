@@ -18,6 +18,8 @@ import com.idrw.flippy.ui.view.deck.DeckViewModel
 import com.idrw.flippy.ui.view.newCard.NewCard
 import com.idrw.flippy.ui.view.decks.Decks
 import com.idrw.flippy.ui.view.decks.DecksViewModel
+import com.idrw.flippy.ui.view.editDeck.EditDeck
+import com.idrw.flippy.ui.view.editDeck.EditDeckViewModel
 import com.idrw.flippy.ui.view.flashcardPractice.FlashcardPracticeViewModel
 import com.idrw.flippy.ui.view.newCard.NewCardViewModel
 import com.idrw.flippy.ui.view.newDeck.NewDeck
@@ -29,6 +31,7 @@ data object Routes {
     @Serializable data object Decks
     @Serializable data class Deck(val deckId: Int)
     @Serializable data object NewDeck
+    @Serializable data class EditDeck(val deckId: Int)
     @Serializable data class NewCard(val deckId: Int)
     @Serializable data class Flashcard(
         val deckId: Int,
@@ -95,6 +98,18 @@ fun Navigation(content: @Composable (page: @Composable () -> Unit) -> Unit) {
                         NewDeckViewModel(context)
                     }
                     NewDeck(vm)
+                }
+
+                composable<Routes.EditDeck>(
+                    enterTransition = { slideIntoContainer(towards = AnimatedContentTransitionScope.SlideDirection.Left) },
+                    popExitTransition = { slideOutOfContainer(towards = AnimatedContentTransitionScope.SlideDirection.Right) }
+                ) {
+                    val args = it.toRoute<Routes.EditDeck>()
+                    val context = LocalContext.current
+                    val vm = viewModel {
+                        EditDeckViewModel(context, args.deckId)
+                    }
+                    EditDeck(vm)
                 }
 
                 composable<Routes.Flashcard> (

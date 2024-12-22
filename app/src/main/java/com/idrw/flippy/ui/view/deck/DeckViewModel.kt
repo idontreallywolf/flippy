@@ -25,6 +25,9 @@ class DeckViewModel(context: Context, deckId: Int): ViewModel() {
     var learnStatusFilter by mutableStateOf<LearnStatus?>(LearnStatus.NOT_LEARNED)
         private set
 
+    var deckDeleted by mutableStateOf<Boolean?>(false)
+        private set
+
     val currentDeck = deckDao.findDeckById(deckId).stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
@@ -47,6 +50,13 @@ class DeckViewModel(context: Context, deckId: Int): ViewModel() {
         viewModelScope.launch {
             flashcardDao.delete(flashcard)
             deckDao.decrementCountById(flashcard.deckId)
+        }
+    }
+
+    fun deleteDeck(deck: Deck) {
+        viewModelScope.launch {
+            deckDao.delete(deck)
+            deckDeleted = true
         }
     }
 
